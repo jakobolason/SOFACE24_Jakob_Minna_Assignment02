@@ -1,5 +1,10 @@
 # 270191U025-Software-Architecture-assignment-template
 
+Resources:
+
+1. https://www.state-machine.com/doc/AN_Simple_OOP_in_C.pdf
+2.
+
 ## ONLY FOR TEACHERS (REMOVE THIS FROM ASSIGNMENT)
 
 This repository contains a template for C++ based assignements in the 'Software Architecture' course.

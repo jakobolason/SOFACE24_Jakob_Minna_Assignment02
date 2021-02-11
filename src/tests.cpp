@@ -1,65 +1,56 @@
 #define CATCH_CONFIG_MAIN // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
-#include "queue_array.hpp"
-#include "queue_linked_list.hpp"
-#include "queue.hpp"
+
+// use 'extern "C"' when including C header files in C++
+extern "C"
+{
+#include "unit.h"
+#include "soldier.h"
+#include "combat_medic.h"
+}
 
 // See Catch2's documentation: https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#scaling-up
-TEST_CASE("QueueArray")
+TEST_CASE("WarNeverChanges")
 {
-    QueueArray q;
+    Unit SkinnyJoe;
+    make_unit(&SkinnyJoe, 10);
 
-    SECTION("Queue starts empty")
+    Soldier MadMike;
+    make_soldier(&MadMike, 120, 10);
+
+    CombatMedic CaringCarlson;
+    make_combat_medic(&CaringCarlson, 45, 5);
+
+    SECTION("UNIT")
     {
-
-        REQUIRE(q.empty() == true);
+        Unit SkinnyJoe;
+        make_unit(&SkinnyJoe, 10);
+        REQUIRE(unit_get_health(&SkinnyJoe) == 10);
     }
 
-    SECTION("enqueue then dequeue")
+    SECTION("Soldier")
     {
-        q.enqueue(1);
-        REQUIRE(q.empty() != true);
-        REQUIRE(q.dequeue() == 1);
-        REQUIRE(q.empty() == true);
-    }
-}
+        REQUIRE(unit_get_health((Unit *)&MadMike) == 120);
 
-TEST_CASE("QueueLinkedList")
-{
-    QueueLinkedList q;
-
-    SECTION("Queue starts empty")
-    {
-
-        REQUIRE(q.empty() == true);
+        unit_attack_target(((Unit *)&MadMike), &SkinnyJoe);
+        REQUIRE(unit_get_health(&SkinnyJoe) == 0);
     }
 
-    SECTION("enqueue then dequeue")
-    {
-        q.enqueue(1);
-        REQUIRE(q.empty() != true);
-        REQUIRE(q.dequeue() == 1);
-        REQUIRE(q.empty() == true);
-    }
-}
-
-TEST_CASE("Queues accessed as abstract class")
-{
-    Queue *q = GENERATE(new QueueArray(), new QueueLinkedList());
-
-    SECTION("Queue starts empty")
+    SECTION("Combat Medic")
     {
 
-        REQUIRE(q->empty() == true);
-    }
+        unit_attack_target((Unit *)&CaringCarlson, &SkinnyJoe);
+        REQUIRE(unit_get_health(&SkinnyJoe) == 5);
+        unit_attack_target((Unit *)&CaringCarlson, &SkinnyJoe);
+        REQUIRE(unit_get_health(&SkinnyJoe) == 0);
+        unit_heal_target((Unit *)&CaringCarlson, &SkinnyJoe);
 
-    SECTION("enqueue then dequeue")
-    {
-        q->enqueue(1);
-        REQUIRE(q->empty() != true);
-        REQUIRE(q->dequeue() == 1);
-        REQUIRE(q->empty() == true);
-    }
+        while (unit_get_health(&SkinnyJoe) > 0)
+        {
+            unit_attack_target((Unit *)&CaringCarlson, &SkinnyJoe);
+        }
 
-    delete q;
+        unit_heal_target((Unit *)&CaringCarlson, &SkinnyJoe);
+        REQUIRE(unit_get_health(&SkinnyJoe) == 0); // he is dead
+    }
 }
