@@ -7,47 +7,35 @@
 
 // See Catch2's documentation: https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#scaling-up
 
-TEST_CASE("Unit")
-{
-    // Unit SkinnyJoe(10);
-    // make_unit(&SkinnyJoe, 10);
-    // REQUIRE(unit_get_health(&SkinnyJoe) == 10);
-}
-
 TEST_CASE("Soldier")
 {
-    // Soldier MadMike;
-    // make_soldier(&MadMike, 120, 10);
-    // Unit SkinnyJoe;
-    // make_unit(&SkinnyJoe, 10);
+    Soldier MadMike(120, 10);
+    Soldier SkinnyJoe(10, 0);
 
-    // REQUIRE(unit_get_health((Unit *)&MadMike) == 120);
+    REQUIRE(MadMike.get_health() == 120);
 
-    // unit_attack_target(((Unit *)&MadMike), &SkinnyJoe);
-    // REQUIRE(unit_get_health(&SkinnyJoe) == 0);
+    MadMike.attack(SkinnyJoe);
+    REQUIRE(SkinnyJoe.get_health() == 0);
 }
 
 TEST_CASE("Combat Medic")
 {
-    // Unit SkinnyJoe;
-    // make_unit(&SkinnyJoe, 10);
+    Soldier SkinnyJoe(10, 0);
+    CombatMedic CaringCarlson(45, 5);
 
-    // CombatMedic CaringCarlson;
-    // make_combat_medic(&CaringCarlson, 45, 5);
+    REQUIRE(SkinnyJoe.get_health() == 10);
 
-    // REQUIRE(unit_get_health(&SkinnyJoe) == 10);
+    CaringCarlson.attack(SkinnyJoe);
+    REQUIRE(SkinnyJoe.get_health() == 5);
 
-    // unit_attack_target((Unit *)&CaringCarlson, &SkinnyJoe);
-    // REQUIRE(unit_get_health(&SkinnyJoe) == 5);
-    // unit_attack_target((Unit *)&CaringCarlson, &SkinnyJoe);
-    // REQUIRE(unit_get_health(&SkinnyJoe) == 0);
-    // unit_heal_target((Unit *)&CaringCarlson, &SkinnyJoe);
+    CaringCarlson.heal(SkinnyJoe);
+    REQUIRE(SkinnyJoe.get_health() > 5);
 
-    // while (unit_get_health(&SkinnyJoe) > 0)
-    // {
-    //     unit_attack_target((Unit *)&CaringCarlson, &SkinnyJoe);
-    // }
+    while (SkinnyJoe.get_health() > 0)
+    {
+        CaringCarlson.attack(SkinnyJoe);
+    }
 
-    // unit_heal_target((Unit *)&CaringCarlson, &SkinnyJoe);
-    // REQUIRE(unit_get_health(&SkinnyJoe) == 0); // he is dead
+    CaringCarlson.heal(SkinnyJoe);
+    REQUIRE(SkinnyJoe.get_health() <= 0); // he is dead
 }

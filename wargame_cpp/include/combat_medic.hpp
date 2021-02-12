@@ -1,10 +1,13 @@
 #ifndef COMBAT_MEDIC_HPP
 #define COMBAT_MEDIC_HPP
 
-#include "unit.hpp"
+#include "soldier.hpp"
 
-class CombatMedic : public Unit
+class CombatMedic : public Soldier
 {
+public:
+    CombatMedic(int health, int damage);
+    virtual void heal(Unit &target);
 };
 
 #endif // COMBAT_MEDIC_HPP

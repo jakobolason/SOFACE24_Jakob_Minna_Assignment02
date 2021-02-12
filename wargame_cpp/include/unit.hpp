@@ -5,10 +5,10 @@ class Unit
 public:
     Unit(int health);
     virtual const int get_health();
-    virtual void set_health(int);
+    virtual void set_health(int health);
     virtual void take_hit(int damage);
     virtual void attack(Unit &target) = 0;
-    virtual void heal(Unit &target, int health) = 0;
+    virtual void heal(Unit &target) = 0;
     virtual ~Unit(){};
 
 private:
