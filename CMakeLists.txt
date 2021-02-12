@@ -1,16 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 project(template)
 
-include_directories(include) # set include directory of all targets to the 'include' folder, this is similar to '-I include' in gcc
-add_library(wargame src/unit.c src/combat_medic.c  src/soldier.c) # define library called queue that can imported into other targets via 'target_link_libraries'
-target_include_directories(wargame PUBLIC include)
-
-add_executable(main src/main.cpp) # define executable named main for experimenting and debugging code
-
-
-# tests are added by declaring a target, in this case 'tests'.
-# additional tests can be added by expanding the test cases in 'src/tests.cpp' or an additional target via 'add_executable'
+# enable testing using ctest
 enable_testing()
-add_executable(tests src/tests.cpp)
-target_link_libraries(tests wargame)
-add_test(wargame_tests tests)
+
+# include other cmake projects
+add_subdirectory(wargame_c)
+add_subdirectory(wargame_cpp)
+add_subdirectory(test)
+add_subdirectory(sandbox)
