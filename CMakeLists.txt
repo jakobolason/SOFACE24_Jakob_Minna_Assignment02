@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
-project(template)
+project(assignment1)
+include(CTest)
+
+set(CMAKE_CXX_STANDARD 14)
 
 # enable testing using ctest
 enable_testing()
