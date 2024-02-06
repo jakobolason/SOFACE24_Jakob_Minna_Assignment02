@@ -2,7 +2,7 @@
 
 void combat_medic_heal(Unit *self, Unit *target)
 {
-    if (unit_get_health(target) < 0)
+    if (unit_get_health(target) <= 0) /* combat medic can't heal a dead soldier (health == 0)*/
     {
         printf("He is gone...");
     }
